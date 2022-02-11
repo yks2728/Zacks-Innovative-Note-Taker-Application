@@ -1,14 +1,25 @@
 {
   "name": "note-taker",
   "version": "1.0.0",
-  "description": "",
+  "description": "## Use my Note Taker to keep track of all the tasks you need to remember",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.2"
-  }
+    "express": "^4.17.2",
+    "node": "^17.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yks2728/Zacks-Innovative-Note-Taker-Application.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/yks2728/Zacks-Innovative-Note-Taker-Application/issues"
+  },
+  "homepage": "https://github.com/yks2728/Zacks-Innovative-Note-Taker-Application#readme"
 }
