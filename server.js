@@ -1,38 +1,50 @@
 const fs = require('fs');
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 const express = require('express');
-const {
-  getNotes,
-  saveNote,
-  deleteNote,
-} = require('./lib/notes.js');
-const { notes } = require('./db/db.json');
+
+const notes = require('./db/db.json');
+console.log('notes', notes);
 
 
 const PORT = process.env.PORT || 3001;
 const app = express();
-// const apiRoutes = require('./routes/apiRoutes');
-// const htmlRoutes = require('./routes/htmlRoutes');
+
 
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// app.use('/api', apiRoutes);
-// app.use('/', htmlRoutes);
-
-// app.get('/notes', (req, res) => {
-//   res.json('notes');
-// });
-
-app.get('/notes', (req, res) =>{
-  let results = notes;
-  if (req.query) {
-    results = getNotes(req.query, results);
-  }
-  res.json(results);
+app.get('/api/notes', (req, res) => {
+  res.json(notes)
 });
 
+
+app.post('/api/notes/', (req, res) => {
+req.body.id = uuidv4();
+notes.push(req.body)
+  fs.writeFile('./db/db.json', JSON.stringify(notes), (error) => {
+    if (error) {
+      console.log('There is an error', error);
+    } else {
+      console.log('File Sucessfully Written');
+    }
+    
+  })
+  res.json(notes);
+});
+
+app.delete('/api/notes/:id', (req, res) => {
+  
+  for (let i = 0; i < notes.length; i++) {
+    const note = notes[i];
+    console.log('note', note.id);
+    if (note.id === req.params.id) {
+      console.log(i);
+    }
+  }
+  res.json(notes);
+});
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, './public/index.html'));
@@ -49,3 +61,6 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`API server now on port ${PORT}`);
 });
+
+// remove the item from the array
+// rewrite the file so it deletes the note
