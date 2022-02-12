@@ -1,6 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
+const {
+  getNotes,
+  saveNote,
+  deleteNote,
+} = require('./lib/notes.js');
 const { notes } = require('./db/db.json');
 
 
@@ -19,6 +24,14 @@ app.use(express.json());
 // app.get('/notes', (req, res) => {
 //   res.json('notes');
 // });
+
+app.get('/notes', (req, res) =>{
+  let results = notes;
+  if (req.query) {
+    results = getNotes(req.query, results);
+  }
+  res.json(results);
+});
 
 
 app.get('/', (req, res) => {
