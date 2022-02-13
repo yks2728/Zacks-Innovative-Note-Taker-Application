@@ -4,7 +4,6 @@ const { v4: uuidv4 } = require("uuid");
 const express = require("express");
 
 const notes = require("./db/db.json");
-const e = require("express");
 console.log("notes", notes);
 
 const PORT = process.env.PORT || 3001;
@@ -24,7 +23,7 @@ app.get("/api/notes", (req, res) => {
 app.post("/api/notes/", (req, res) => {
   req.body.id = uuidv4();
   notes.push(req.body);
-  fs.writeFile("./db/db.json", JSON.stringify(notes), (error) => {
+  fs.writeFileSync("./db/db.json", JSON.stringify(notes), (error) => {
     if (error) {
       console.log("There is an error", error);
     } else {
@@ -37,6 +36,7 @@ app.post("/api/notes/", (req, res) => {
 // DELETE request for notes
 app.delete("/api/notes/:id", (req, res) => {
   const newNotes = [];
+  console.log("Delete Path Triggered");
   for (let i = 0; i < notes.length; i++) {
     const note = notes[i]; 
     console.log("note", note.id);
@@ -45,13 +45,14 @@ app.delete("/api/notes/:id", (req, res) => {
       console.log(i);
     }
   }
-  fs.writeFile("./db/db.json", JSON.stringify(newNotes), (error) => {
+  fs.writeFileSync("./db/db.json", JSON.stringify(newNotes), (error) => {
     if (error) {
       console.log('There is an error', error);
     } else {
       console.log("ID was deleted");
     }
   })
+  console.log(newNotes);
   res.json(newNotes);
 });
 
@@ -72,6 +73,3 @@ app.get("*", (req, res) => {
 app.listen(PORT, () => {
   console.log(`API server now on port ${PORT}`);
 });
-
-// remove the item from the array
-// rewrite the file so it deletes the note
