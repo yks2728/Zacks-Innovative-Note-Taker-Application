@@ -33,29 +33,6 @@ app.post("/api/notes/", (req, res) => {
   res.json(notes);
 });
 
-// DELETE request for notes
-app.delete("/api/notes/:id", (req, res) => {
-  const newNotes = [];
-  console.log("Delete Path Triggered");
-  for (let i = 0; i < notes.length; i++) {
-    const note = notes[i]; 
-    console.log("note", note.id);
-    if (note.id !== req.params.id) {
-      newNotes.push(note);
-      console.log(i);
-    }
-  }
-  fs.writeFileSync("./db/db.json", JSON.stringify(newNotes), (error) => {
-    if (error) {
-      console.log('There is an error', error);
-    } else {
-      console.log("ID was deleted");
-    }
-  })
-  console.log(newNotes);
-  res.json(newNotes);
-});
-
 
 // Connecting Front End with Back End
 app.get("/", (req, res) => {
